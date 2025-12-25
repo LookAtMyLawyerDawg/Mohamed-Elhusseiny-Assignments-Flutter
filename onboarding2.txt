@@ -1,0 +1,140 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MarketInsightsApp());
+}
+
+class MarketInsightsApp extends StatelessWidget {
+  const MarketInsightsApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Market Insights',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.dark(),
+      home: const InsightsView(),
+    );
+  }
+}
+
+class InsightsView extends StatelessWidget {
+  const InsightsView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF0A0A0A),
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: const [
+            Expanded(flex: 5, child: DataVisualization()),
+            Divider(thickness: 1, color: Color(0xFF2A2A2A)),
+            Expanded(flex: 2, child: InsightText()),
+            Divider(thickness: 1, color: Color(0xFF2A2A2A)),
+            Expanded(flex: 1, child: ControlBar()),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class DataVisualization extends StatelessWidget {
+  const DataVisualization({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: const Color(0xFF121212),
+      padding: const EdgeInsets.all(20),
+      child: Center(
+        child: Image.network(
+          'https://raw.githubusercontent.com/OmarSoaida/images/main/News%20Images.png',
+          fit: BoxFit.contain,
+        ),
+      ),
+    );
+  }
+}
+
+class InsightText extends StatelessWidget {
+  const InsightText({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      child: Align(
+        alignment: Alignment.center,
+        child: Text(
+          'Gain valuable insights and make informed decisions with real-time market data and analytics.',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Color(0xFFAB47BC),
+            fontSize: 15,
+            fontWeight: FontWeight.w400,
+            fontStyle: FontStyle.normal,
+            height: 1.4,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ControlBar extends StatelessWidget {
+  const ControlBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _buildStepIndicators(),
+          _buildNextButton(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStepIndicators() {
+    return Row(
+      children: List.generate(3, (index) {
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 5),
+          width: 10,
+          height: 10,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: index == 1 ? const Color(0xFF4285F4) : const Color(0xFF555555),
+          ),
+        );
+      }),
+    );
+  }
+
+  Widget _buildNextButton() {
+    return TextButton(
+      onPressed: () {},
+      style: TextButton.styleFrom(
+        backgroundColor: const Color(0xFF4285F4),
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 14),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      child: const Text(
+        'Proceed',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 15,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+}

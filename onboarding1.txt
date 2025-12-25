@@ -1,0 +1,242 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const ScheduleApp());
+}
+
+class ScheduleApp extends StatelessWidget {
+  const ScheduleApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    const Color primaryColor = Color(0xFF3366FF);
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Scheduler',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
+        useMaterial3: true,
+        textTheme: const TextTheme(
+          displaySmall: TextStyle(
+            fontSize: 48,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.0,
+          ),
+        ),
+      ),
+      home: const WelcomeView(),
+    );
+  }
+}
+
+class WelcomeView extends StatelessWidget {
+  const WelcomeView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final Color primaryColor = Theme.of(context).colorScheme.primary;
+    final double responsiveFontSize = MediaQuery.of(context).size.width * 0.11;
+    final double actualFontSize = responsiveFontSize.clamp(34.0, 62.0);
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Center(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'Sche',
+                style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                      fontSize: actualFontSize,
+                      color: primaryColor,
+                    ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: actualFontSize * 0.07,
+                ),
+                child: CalendarIcon(
+                  color: primaryColor,
+                  size: actualFontSize * 0.88,
+                  strokeWidth: actualFontSize * 0.065,
+                ),
+              ),
+              Text(
+                'duler',
+                style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                      fontSize: actualFontSize,
+                      color: primaryColor,
+                    ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CalendarIcon extends StatelessWidget {
+  final Color color;
+  final double size;
+  final double strokeWidth;
+
+  const CalendarIcon({
+    super.key,
+    required this.color,
+    required this.size,
+    required this.strokeWidth,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final double borderRadius = size * 0.15;
+    final double topSectionHeight = size * 0.24;
+    final double circleDiameter = size * 0.17;
+    final double circleStroke = strokeWidth;
+    final double internalPadding = size * 0.13;
+    final double gapBetweenLines = size * 0.13;
+    final double lineThickness = strokeWidth;
+    final double lineWidth = size * 0.58;
+    final double indicatorSize = size * 0.17;
+
+    return SizedBox(
+      width: size,
+      height: size,
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(borderRadius),
+              border: Border.all(color: color, width: strokeWidth),
+            ),
+          ),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: topSectionHeight,
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.12),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(borderRadius - 1),
+                  topRight: Radius.circular(borderRadius - 1),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: topSectionHeight * 0.50 - circleDiameter / 2,
+            left: size * 0.15 - circleDiameter / 2,
+            child: _CircleIndicator(
+              diameter: circleDiameter,
+              color: color,
+              stroke: circleStroke,
+            ),
+          ),
+          Positioned(
+            top: topSectionHeight * 0.50 - circleDiameter / 2,
+            right: size * 0.15 - circleDiameter / 2,
+            child: _CircleIndicator(
+              diameter: circleDiameter,
+              color: color,
+              stroke: circleStroke,
+            ),
+          ),
+          Positioned(
+            top: topSectionHeight + internalPadding,
+            left: internalPadding,
+            child: _HorizontalLine(
+              width: lineWidth,
+              thickness: lineThickness,
+              color: color,
+            ),
+          ),
+          Positioned(
+            top: topSectionHeight + internalPadding + gapBetweenLines,
+            left: internalPadding,
+            child: _HorizontalLine(
+              width: lineWidth * 0.92,
+              thickness: lineThickness,
+              color: color,
+            ),
+          ),
+          Positioned(
+            top: topSectionHeight + internalPadding + gapBetweenLines * 2,
+            left: internalPadding,
+            child: _HorizontalLine(
+              width: lineWidth * 0.84,
+              thickness: lineThickness,
+              color: color,
+            ),
+          ),
+          Positioned(
+            bottom: internalPadding * 0.7,
+            right: internalPadding * 0.7,
+            child: Container(
+              width: indicatorSize,
+              height: indicatorSize,
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(size * 0.05),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CircleIndicator extends StatelessWidget {
+  final double diameter;
+  final Color color;
+  final double stroke;
+
+  const _CircleIndicator({
+    required this.diameter,
+    required this.color,
+    required this.stroke,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: diameter,
+      height: diameter,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: color, width: stroke),
+        color: Colors.white,
+      ),
+    );
+  }
+}
+
+class _HorizontalLine extends StatelessWidget {
+  final double width;
+  final double thickness;
+  final Color color;
+
+  const _HorizontalLine({
+    required this.width,
+    required this.thickness,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width,
+      height: thickness,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(thickness / 2),
+      ),
+    );
+  }
+}
